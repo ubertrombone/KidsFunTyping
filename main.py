@@ -35,9 +35,9 @@ def run():
     voices = engine.getProperty('voices')
     '''
     Adjust the index of `voices` to change language/gender/voice depending on OS
-    `voices[24] on Linux systems is Finnish```
+    `voices[22] on Linux systems is Finnish```
     '''
-    engine.setProperty('voice', voices[9].id)
+    engine.setProperty('voice', voices[22].id)  # voices[6].id)
     for line in text:
         engine.say(line)
     engine.runAndWait()

@@ -1,5 +1,8 @@
 from pathlib import Path
 import pyttsx3
+import sounddevice as sd
+import soundfile as sf
+from ttsmms import TTS
 
 
 def run():
@@ -43,5 +46,27 @@ def run():
     engine.runAndWait()
 
 
+def mms():
+    """
+    Download the Meta language model.
+    For MacOS/Linux users: curl https://dl.fbaipublicfiles.com/mms/tts/lang_code.tar.gz --output lang_code.tar.gz
+    Replace "lang_code" in the url and tar with the language code for your language. E.g., eng for English
+
+    Extract the tar ball.
+    For MacOS/Linux users: mkdir -p data && tar -xzf lang_code.tar.gz -C data/
+    Replace "lang_code" with the language used above.
+
+    Requires the following libraries: ttsmms, sounddevice
+    """
+    rawText = list(filter(lambda x: x != "", Path('text.txt').read_text().split('\n')))
+    text = " ".join(rawText).lower()
+    tts = TTS("data/fin")
+    wav = tts.synthesis(text, wav_path="output.wav")
+    data, fs = sf.read(wav, dtype='float32')
+    sd.play(data, fs)
+    status = sd.wait()
+
+
 if __name__ == "__main__":
-    run()
+    # run()
+    mms()
